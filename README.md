@@ -1,3 +1,3 @@
-# NewApp
+# React-redux
 
-> Use it to create a React front-side with express backend
+> Use it to build a React-redux front-side with express backend
