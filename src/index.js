@@ -1,23 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import store from '../redux/Store';
-import AddTodo from './AddTodo';
-import VisibilityTodoList from './VisibilityTodoList';
-import Footer from './Footer';
+import { createStore, combineReducers } from 'redux';
 import './index.css';
+import { todoReducer, filterReducer } from './Reducers/Reducer';
+import App from './PresentationComponents/App';
 
-const TodoApp = () => (
-  <div>
-    <AddTodo />
-    <VisibilityTodoList />
-    <Footer />
-  </div>
-);
+const allReducer = combineReducers({ todos: todoReducer, visibilityFilter: filterReducer });
+const store = createStore(allReducer);
 
 ReactDOM.render(
   <Provider store={store}>
-    <TodoApp />
+    <App />
   </Provider>,
   document.getElementById('root'),
 );
