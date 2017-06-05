@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
-import { todoReducer, filterReducer } from './Reducers/Reducer';
+import { firstPage } from './Reducers/firstPage';
 import App from './PresentationComponents/App';
 
-const allReducer = combineReducers({ todos: todoReducer, visibilityFilter: filterReducer });
+const allReducer = combineReducers({ storyList: firstPage });
 const store = createStore(allReducer);
 
 ReactDOM.render(

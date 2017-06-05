@@ -1,18 +1,6 @@
-const setVisibilityFilter = filter => ({
-  type: 'SET_VISIBILITY_FILTER',
-  visibilityFilter: filter,
+const initFirstPage = stories => ({
+  type: 'INIT_PAGE',
+  stories,
 });
 
-const toggleTodo = id => ({
-  type: 'TOGGLE_TODO',
-  id,
-});
-
-const addTodo = (value, id) => ({
-  type: 'ADD_TODO',
-  text: value,
-  id,
-  completed: false,
-});
-
-export { setVisibilityFilter, toggleTodo, addTodo };
+export { initFirstPage };
