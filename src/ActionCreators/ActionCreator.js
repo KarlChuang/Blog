@@ -3,4 +3,9 @@ const initFirstPage = stories => ({
   stories,
 });
 
-export { initFirstPage };
+const readStoryAction = story => ({
+  type: 'INIT_STORY',
+  story,
+});
+
+export { initFirstPage, readStoryAction };
