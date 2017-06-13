@@ -30,4 +30,40 @@ const readStory = (state = defaultStory, action) => {
   }
 };
 
-export { firstPage, readStory };
+const MessageReducer = (state = [], action) => {
+  const newState = state;
+  switch (action.type) {
+    case 'INIT_MESSAGE':
+      return action.messages;
+    case 'ADD_MESSAGE':
+      newState.push(action.newMessage);
+      return newState;
+    default:
+      return state;
+  }
+};
+
+const handleId = (state = { storyId: 0, messageId: 0 }, action) => {
+  const { storyId, messageId } = state;
+  switch (action.type) {
+    case 'INIT_ID':
+      return {
+        storyId: action.storyId,
+        messageId: action.messageId,
+      };
+    case 'STORY_ID':
+      return {
+        storyId: storyId + 1,
+        messageId: action.messageId,
+      };
+    case 'MESSAGE_ID':
+      return {
+        storyId: state.storyId,
+        messageId: messageId + 1,
+      };
+    default:
+      return state;
+  }
+};
+
+export { firstPage, readStory, MessageReducer, handleId };

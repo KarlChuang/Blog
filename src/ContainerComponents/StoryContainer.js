@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import fetch from 'isomorphic-fetch';
 import { BrowserRouter, Route } from 'react-router-dom';
 import StoryPage from '../PresentationComponents/StoryPage';
-import { readStoryAction } from '../ActionCreators/ActionCreator';
+import { readStoryAction, initMessages, addMessage, handleIdInit, handleMessageId } from '../ActionCreators/ActionCreator';
 
 const decodeData = (story) => {
   const newStory = story;
@@ -17,8 +17,21 @@ const decodeData = (story) => {
   return newStory;
 };
 
-const StoryContainer = ({ story, initPage }) => {
+const decodeMessages = (mes) => {
+  const newMes = mes.map((message) => {
+    const newMessage = message;
+    newMessage.author.name = decodeURIComponent(newMessage.author.name);
+    newMessage.author.imgLink = decodeURIComponent(newMessage.author.imgLink);
+    newMessage.content = decodeURIComponent(newMessage.content);
+    newMessage.time = newMessage.time.split('.')[0].replace('T', ' ');
+    return newMessage;
+  });
+  return newMes;
+};
+
+const StoryContainer = ({ story, initPage, handleId, messages, initMessageBoard, inputMessage }) => {
   const decodeStory = decodeData(story);
+  const decodeMessage = decodeMessages(messages);
   return (
     <BrowserRouter>
       <Route
@@ -28,6 +41,10 @@ const StoryContainer = ({ story, initPage }) => {
             id={match.params.id}
             initPage={initPage}
             story={decodeStory}
+            messages={decodeMessage}
+            initMessageBoard={initMessageBoard}
+            addMessage={inputMessage}
+            handleId={handleId}
           />
         )}
       />
@@ -54,6 +71,8 @@ StoryContainer.propTypes = {
 
 const mapStateToLinkProps = state => ({
   story: state.story,
+  messages: state.messages,
+  handleId: state.id,
 });
 
 const mapDispatchToLinkProps = dispatch => ({
@@ -63,6 +82,42 @@ const mapDispatchToLinkProps = dispatch => ({
     ).then((json) => {
       dispatch(readStoryAction(json));
     });
+    fetch('/api/handleid').then(response =>
+      response.json(),
+    ).then((json) => {
+      dispatch(handleIdInit(json.storyId, json.messageId));
+    });
+  },
+  initMessageBoard: (storyId) => {
+    fetch(`/api/messages/${storyId}`).then(response =>
+      response.json(),
+    ).then((json) => {
+      dispatch(initMessages(json));
+    });
+  },
+  inputMessage: (id, authorName, authorImgLink, content, storyId) => {
+    if (content) {
+      const now = new Date();
+      const time = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      dispatch(addMessage(id, authorName, authorImgLink, content, time));
+      dispatch(handleMessageId());
+      fetch('/api/addmessage', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          author: {
+            Name: encodeURIComponent(authorName),
+            imgLink: encodeURIComponent(authorImgLink),
+          },
+          content: encodeURIComponent(content),
+          time,
+          replyToStory: storyId,
+        }),
+      });
+    }
   },
 });
 

@@ -8,4 +8,44 @@ const readStoryAction = story => ({
   story,
 });
 
-export { initFirstPage, readStoryAction };
+const initMessages = messages => ({
+  type: 'INIT_MESSAGE',
+  messages,
+});
+
+const addMessage = (id, authorName, authorImgLink, content, time) => ({
+  type: 'ADD_MESSAGE',
+  newMessage: {
+    author: {
+      name: encodeURIComponent(authorName),
+      imgLink: encodeURIComponent(authorImgLink),
+    },
+    content: encodeURIComponent(content),
+    time,
+    id,
+  },
+});
+
+const handleIdInit = (storyId, messageId) => ({
+  type: 'INIT_ID',
+  storyId,
+  messageId,
+});
+
+const handleStoryId = () => ({
+  type: 'STORY_ID',
+});
+
+const handleMessageId = () => ({
+  type: 'MESSAGE_ID',
+});
+
+export {
+  initFirstPage,
+  readStoryAction,
+  initMessages,
+  addMessage,
+  handleIdInit,
+  handleStoryId,
+  handleMessageId,
+};

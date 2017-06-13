@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import TopBar from '../PresentationComponents/TopBar';
+import MessageList from '../PresentationComponents/MessageList';
 
 const Story = styled.div`
   width: 100%;
@@ -84,16 +85,44 @@ const Tags = styled(Content)`
 
 const Author = styled(Content)`
   margin-top: 30px;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
+`;
+
+const Detail2 = styled(Detail)`
+  width: 80px;
+  @media (max-width: 600px) {
+    display: inline-block;
+  }
+`;
+
+const ButtomBar = styled.div`
+  display: inline-block;
+  @media (max-width: 600px) {
+    width: 100%;
+    text-align: center;
+    display: block;
+  }
+`;
+
+const MessegeBoard = styled.div`
+  width: 100%;
+  padding-bottom: 50px;
+  background-color: rgb(214, 219, 222);
 `;
 
 class StoryPage extends Component {
   constructor(props) {
     super(props);
     this.props.initPage(this.props.id);
+    this.props.initMessageBoard(this.props.id);
   }
   render() {
+    const id = Number(this.props.id);
     const story = this.props.story;
+    const messages = this.props.messages;
+    const addMessage = this.props.addMessage;
+    const handleId = this.props.handleId;
+    console.log(handleId.messageId);
     return (
       <Story>
         <TopBar type="story" />
@@ -113,7 +142,21 @@ class StoryPage extends Component {
               {story.time}
             </Detail>
           </div>
+          <ButtomBar>
+            <Detail2>
+              like {story.likeNum}
+            </Detail2>
+            <Detail2>
+              view {story.view}
+            </Detail2>
+          </ButtomBar>
         </Author>
+        <MessegeBoard>
+          <MessageList
+            messageData={messages}
+            handleNew={newMessage => addMessage(handleId.messageId, 'Karl Chuang', './karl.png', newMessage, id)}
+          />
+        </MessegeBoard>
       </Story>
     );
   }

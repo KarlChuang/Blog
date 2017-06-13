@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './src/RootComponents/index.js',
+  entry: './src/RootComponents/StoryApp.js',
 
   output: {
     path: path.resolve(__dirname, './dist'),
