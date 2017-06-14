@@ -40,6 +40,34 @@ const handleMessageId = () => ({
   type: 'MESSAGE_ID',
 });
 
+const addTag = tag => ({
+  type: 'ADD_TAG',
+  newTag: tag,
+});
+
+const clearTag = () => ({
+  type: 'CLEAR_TAG',
+});
+
+const updateTitle = title => ({
+  type: 'UPDATE_TITLE',
+  title,
+});
+
+const updateSubtitle = subtitle => ({
+  type: 'UPDATE_SUBTITLE',
+  subtitle,
+});
+
+const updateContent = content => ({
+  type: 'UPDATE_CONTENT',
+  content,
+});
+
+const clearUpdate = () => ({
+  type: 'CLEAR_UPDATE',
+});
+
 export {
   initFirstPage,
   readStoryAction,
@@ -48,4 +76,10 @@ export {
   handleIdInit,
   handleStoryId,
   handleMessageId,
+  addTag,
+  clearTag,
+  updateTitle,
+  updateSubtitle,
+  updateContent,
+  clearUpdate,
 };

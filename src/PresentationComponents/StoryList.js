@@ -114,11 +114,41 @@ const TagTitle = styled.div`
   margin-bottom: 15px;
   font-size: 30px;
   font-weight: 700;
+  min-height: 30px;
   @media (max-width: 600px) {
     width: 100%;
     margin-left: 20px;
     margin-right: 0;
     margin-top: 40px;
+  }
+`;
+
+const AddStoryButton = styled.button`
+  font-size: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: rgba(181, 181, 181, 0.32);
+  -webkit-text-align: center;
+  text-align: center;
+  margin-right: 8%;
+  margin-top: -65px;
+  font-weight: 900;
+  width: 40px;
+  height: 40px;
+  float: right;
+  color: white;
+  line-height: 40px;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+  @media (max-width: 600px) {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    background-color: rgb(119, 117, 117);
+    transition: background-color 0.3s;
+    cursor: auto;
   }
 `;
 
@@ -182,7 +212,9 @@ const StoryList = ({ list, tag }) => (
   <div>
     {
       (tag) ? (
-        <TagTitle>{tag}</TagTitle>
+        <TagTitle>
+          {tag}
+        </TagTitle>
       ) : null
     }
     {
@@ -199,6 +231,7 @@ const StoryList = ({ list, tag }) => (
         />
       ))
     }
+    <Link to="/newstory"><AddStoryButton>＋</AddStoryButton></Link>
   </div>
 );
 StoryList.defaultProps = {

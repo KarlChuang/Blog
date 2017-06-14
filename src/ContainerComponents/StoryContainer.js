@@ -29,7 +29,14 @@ const decodeMessages = (mes) => {
   return newMes;
 };
 
-const StoryContainer = ({ story, initPage, handleId, messages, initMessageBoard, inputMessage }) => {
+const StoryContainer = ({
+  story,
+  initPage,
+  handleId,
+  messages,
+  initMessageBoard,
+  inputMessage,
+}) => {
   const decodeStory = decodeData(story);
   const decodeMessage = decodeMessages(messages);
   return (

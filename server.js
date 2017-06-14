@@ -32,13 +32,15 @@ app.get('/auth/facebook/callback',
   });
 */
 app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(path.join(__dirname, 'dist/home')));
+app.use('/', express.static(path.join(__dirname, 'dist')));
 app.use('/like', express.static(path.join(__dirname, 'public')));
-app.use('/like', express.static(path.join(__dirname, 'dist/home')));
+app.use('/like', express.static(path.join(__dirname, 'dist')));
 app.use('/view', express.static(path.join(__dirname, 'public')));
-app.use('/view', express.static(path.join(__dirname, 'dist/home')));
+app.use('/view', express.static(path.join(__dirname, 'dist')));
 app.use('/tag/:name', express.static(path.join(__dirname, 'public')));
-app.use('/tag/:name', express.static(path.join(__dirname, 'dist/home')));
+app.use('/tag/:name', express.static(path.join(__dirname, 'dist')));
+app.use('/newstory', express.static(path.join(__dirname, 'public')));
+app.use('/newstory', express.static(path.join(__dirname, 'dist')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -81,7 +83,7 @@ app.get('/api/storyList', (req, res) => {
 });
 
 app.use('/story/:id', express.static(path.join(__dirname, 'public')));
-app.use('/story/:id', express.static(path.join(__dirname, 'dist')));
+app.use('/story/:id', express.static(path.join(__dirname, 'dist/story')));
 
 app.get('/api/story/:id', (req, res) => {
   knex.select('id', 'title', 'subtitle', 'time', 'likeNum', 'view', 'content').from('stories').where('id', req.params.id).then((result) => {
@@ -169,6 +171,72 @@ app.post('/api/addmessage', (req, res) => {
     time: newMessage.time,
     content: newMessage.content,
     replyToStory: newMessage.replyToStory,
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
+app.post('/api/addStory', (req, res) => {
+  const newStory = JSON.parse(JSON.stringify(req.body));
+  const newStoryTags = newStory.tags.filter((item, index, inputArray) => (
+    inputArray.indexOf(item) === index
+  ));
+  const tagIds = [];
+  knex('tags').select('id').then((ids) => {
+    const newTagId = Math.max(...ids.map(obj => obj.id));
+    return newTagId;
+  }).then((tagId) => {
+    let newTagId = tagId;
+    newStoryTags.forEach((tag) => {
+      knex('tags').select('Id', 'name').where('name', tag).then((response) => {
+        if (response.length === 0) {
+          newTagId += 1;
+          tagIds.push(newTagId);
+          knex('tags').insert({
+            Id: newTagId,
+            name: tag,
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        } else {
+          tagIds.push(response[0].Id);
+        }
+        if (tagIds.length === newStoryTags.length) {
+          knex('stories').insert({
+            id: newStory.id,
+            title: newStory.title,
+            subtitle: newStory.subtitle,
+            authorId: newStory.authorId,
+            content: newStory.content,
+            time: newStory.time,
+            likeNum: 0,
+            view: 0,
+          }).then(() => {
+            tagIds.forEach((tid, index) => {
+              knex('storyTags').insert({
+                storyId: newStory.id,
+                tagId: tid,
+              }).then(() => {
+                if (index === tagIds.length - 1) {
+                  res.send('success');
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    });
   })
   .catch((err) => {
     console.log(err);

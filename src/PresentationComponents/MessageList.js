@@ -152,9 +152,10 @@ const AddBar = styled.div`
 const Input = styled.div`
   width:  calc(100% - 60px);
   display: inline-flex;
-  height: 30px;
+  height: 70px;
   border: 0;
   padding-left: 6px;
+  vertical-align: top;
   @media (max-width: 550px) {
     width: 100%
   }
@@ -163,7 +164,7 @@ const Input = styled.div`
 const AddButton = styled.button`
   border: 0;
   margin-left: 5px;
-  height: 30px;
+  height: 73.5px;
   background-color: rgb(175, 160, 114);
   font-weight: 400;
   color: white;
@@ -171,6 +172,16 @@ const AddButton = styled.button`
     display: none;
   }
 `;
+
+const textAreaStyle = {
+  height: '70px',
+  width: '100%',
+  fontSize: '17px',
+  fontFamily: 'cursive',
+  fontWeight: '700',
+  border: '0',
+};
+
 
 const MessageArray = (InputArray) => {
   const DataRender = InputArray.map((message) => {
@@ -198,7 +209,7 @@ class MessageList extends React.Component {
     return (
       <AppDiv>
         <AddBar>
-          <Input><input style={{ width: '100%' }} ref={(input) => { this.textInput = input; }} /></Input>
+          <Input><textarea style={textAreaStyle} ref={(input) => { this.textInput = input; }} /></Input>
           <AddButton onClick={() => { handleNew(this.textInput.value); this.textInput.value = ''; }}>Reply</AddButton>
         </AddBar>
         <TopBoard>
