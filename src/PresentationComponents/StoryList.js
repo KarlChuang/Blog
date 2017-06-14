@@ -94,6 +94,7 @@ const Tags = styled.div`
 
 const TagButton = styled.button`
   max-width: 100%;
+  cursor: auto;
   display: block;
   border: 0;
   font-size: 12px;
@@ -155,7 +156,7 @@ const AddStoryButton = styled.button`
 const mapArray = (array) => {
   const mapTags = [];
   for (let i = 0; i < 5 && i < array.length; i += 1) {
-    mapTags[i] = (<Link to={`/tag/${array[i]}/`}><TagButton key={array[i]}>{array[i]}</TagButton></Link>);
+    mapTags[i] = (<Link style={{ textDecoration: 'initial' }} to={`/tag/${array[i]}/`}><TagButton key={array[i]}>{array[i]}</TagButton></Link>);
   }
   return mapTags;
 };
@@ -171,15 +172,16 @@ const StoryBlock = ({ id, title, content, author, time, like, view, tags }) => (
           {content}
         </Content>
       </a>
-      <Image src={author.imgLink} alt="" />
+      <Image src={'./notLogin.jpg'} alt="" />
       <div style={{ display: 'inline-block' }}>
         <Detail style={{ display: 'block' }}>
-          {author.name}
+          {'未登入'}
         </Detail>
         <Detail style={{ width: '100px', display: 'block' }}>
           {time}
         </Detail>
       </div>
+      { /*
       <ButtomBar>
         <Detail2>
           like {like}
@@ -188,6 +190,7 @@ const StoryBlock = ({ id, title, content, author, time, like, view, tags }) => (
           view {view}
         </Detail2>
       </ButtomBar>
+      */ }
     </div>
     <Tags>
       { mapArray(tags) }
@@ -209,7 +212,7 @@ StoryBlock.propTypes = {
 };
 
 const StoryList = ({ list, tag }) => (
-  <div>
+  <div style={{ paddingBottom: '10px' }}>
     {
       (tag) ? (
         <TagTitle>

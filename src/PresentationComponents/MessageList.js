@@ -2,132 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Message from './Message';
 
-/*
-  constructor() {
-    super();
-    this.state = {
-      data: [],
-      show: false,
-      replyNums: 0,
-      replyHover: false,
-    };
-    this.MessageArray = this.MessageArray.bind(this);
-  }
-  componentWillMount() {
-    fetch('/api/comments').then(response => {
-      return response.json();
-    }).then(json => {
-      this.setState({
-        data: json.Messages,
-      });
-    });
-  }
-  handleClick(nameValue, contentValue) {
-    let newData = this.state.data;
-    const currentTime = new Date();
-    const timeString = currentTime.getFullYear().toString() + '-' + (currentTime.getMonth()+1).toString() + '-' + currentTime.getDate().toString() + ' ' + currentTime.getHours().toString() + ':' + currentTime.getMinutes().toString();
-    if (this.state.replyNums === 0) {
-      newData.push({
-        name: nameValue,
-        time: timeString,
-        content: contentValue,
-        reply: [],
-      });
-    } else {
-      let topData = [];   // 201 => 1 2
-      let i = 0;
-      let rem = [this.state.replyNums];
-      while (rem[i] > 0.1) {
-        rem[i+1] = (rem[i] / 100).toFixed(0);
-        rem[i] = rem[i] % 100 - 1;
-        i += 1;
-      }
-      i -= 1;
-      topData[i] = newData[rem[i]];   // [] {2}
-      for (let j = i-1; j >= 0; j -= 1) {
-        topData[j] = topData[j+1].reply[rem[j]]; // {1} {2}
-      }
-      if (i <= 3) {
-        topData[0].reply.push({
-          name: nameValue,
-          time: timeString,
-          content: contentValue,
-          reply: [],
-        });
-        for (let j = 1; j <= i; j += 1) {
-          topData[j].reply[rem[j-1]] = topData[j-1];
-        }
-      } else {
-        topData[1].reply.push({
-          name: nameValue,
-          time: timeString,
-          content: contentValue,
-          reply: [],
-        });
-        for (let j = 2; j <= i; j += 1) {
-          topData[j].reply[rem[j-1]] = topData[j-1];
-        }
-      }
-      newData[rem[i]] = topData[i];
-    }
-
-    this.setState({
-      data: newData,
-      show: false,
-      replyNums: 0,
-      replyHover: false,
-    });
-
-    fetch('/api/comments', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ Messages: this.state.data }),
-    });
-  }
-  handleCancel() {
-    this.setState({
-      show: false,
-      replyNums: 0,
-    });
-  }
-  handleReply(nums) {
-    this.setState({
-      show: true,
-      replyNums: nums,
-    });
-  }
-  handleNew() {
-    this.setState({
-      show: true,
-    });
-  }
-  handleMouseIn() {
-    this.setState({
-      replyHover: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        replyHover: false,
-      });
-    }, 1000);
-  }
-*/
-/*
-Message.propTypes = {
-  message: {
-    name: React.PropTypes.string.isRequired,
-    content: React.PropTypes.string.isRequired,
-    time: React.PropTypes.string.isRequired,
-    handleReply: React.PropTypes.func.isRequired,
-    nums: React.PropTypes.number.isRequired,
-    replyData: React.PropTypes.array,
-  },
-};
-*/
-
 const AppDiv = styled.div`
   max-width: 750px;
   margin: auto;
@@ -180,6 +54,7 @@ const textAreaStyle = {
   fontFamily: 'cursive',
   fontWeight: '700',
   border: '0',
+  resize: 'none',
 };
 
 

@@ -50,10 +50,10 @@ const Image = styled.img`
 const Message = ({ message }) => (
   <Mes>
     <div style={{ display: 'inline-flex' }}>
-      <Image src={message.imgLink} alt="" />
+      <Image src={'./notLogin.jpg'/* message.imgLink */} alt="" />
       <div style={{ display: 'inline-block' }}>
         <Detail style={{ marginRight: '10px' }}>
-          {message.name}
+          {'未登入'/* message.name */}
         </Detail>
         <Detail style={{ fontSize: '14px' }}>
           {message.time}

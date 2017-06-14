@@ -130,18 +130,19 @@ class StoryPage extends Component {
         <Subtitle>{story.subtitle}</Subtitle>
         <Content>{story.content}</Content>
         <Tags>
-          {story.tags.map(tag => <a href={`/tag/${tag}`}><TagButton key={tag}>{tag}</TagButton></a>)}
+          {story.tags.map(tag => <a href={`/tag/${tag}`}><TagButton style={{ cursor: 'auto' }} key={tag}>{tag}</TagButton></a>)}
         </Tags>
         <Author>
-          <Image src={story.author.imgLink} alt="" />
+          <Image src={'./notLogin.jpg'/* story.author.imgLink */} alt="" />
           <div style={{ display: 'inline-block' }}>
             <Detail style={{ display: 'block' }}>
-              {story.author.name}
+              {'未登入'/* story.author.name */}
             </Detail>
             <Detail style={{ width: '100px', display: 'block' }}>
               {story.time}
             </Detail>
           </div>
+          { /*
           <ButtomBar>
             <Detail2>
               like {story.likeNum}
@@ -150,6 +151,7 @@ class StoryPage extends Component {
               view {story.view}
             </Detail2>
           </ButtomBar>
+          */ }
         </Author>
         <MessegeBoard>
           <MessageList

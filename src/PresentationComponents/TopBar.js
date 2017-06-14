@@ -45,13 +45,17 @@ const ButtonStoryChanger = styled.button`
 const TopBar = ({ type }) => (
   <TopBarDiv>
     <Title>
-      <div style={{ fontSize: '35px' }}>Blog</div>
-      <div style={{ fontSize: '15px' }}>Sharing & Reading</div>
+      <a style={{ textDecoration: 'none', color: 'black' }} href="/">
+        <div style={{ fontSize: '35px' }}>Blog</div>
+        <div style={{ fontSize: '15px' }}>Sharing & Reading</div>
+      </a>
     </Title>
     <ButtonStoryChanger>User</ButtonStoryChanger>
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link to="/like">Most like</Link></ButtonStoryChanger>)}
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link to="/view">Most view</Link></ButtonStoryChanger>)}
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link to="/">latest</Link></ButtonStoryChanger>)}
+    { /*
+    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/like">Most like</Link></ButtonStoryChanger>)}
+    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/view">Most view</Link></ButtonStoryChanger>)}
+    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/">latest</Link></ButtonStoryChanger>)}
+    */ }
   </TopBarDiv>
 );
 

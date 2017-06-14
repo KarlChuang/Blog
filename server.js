@@ -32,15 +32,15 @@ app.get('/auth/facebook/callback',
   });
 */
 app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(path.join(__dirname, 'dist')));
+app.use('/', express.static(path.join(__dirname, 'dist/home')));
 app.use('/like', express.static(path.join(__dirname, 'public')));
-app.use('/like', express.static(path.join(__dirname, 'dist')));
+app.use('/like', express.static(path.join(__dirname, 'dist/home')));
 app.use('/view', express.static(path.join(__dirname, 'public')));
-app.use('/view', express.static(path.join(__dirname, 'dist')));
+app.use('/view', express.static(path.join(__dirname, 'dist/home')));
 app.use('/tag/:name', express.static(path.join(__dirname, 'public')));
-app.use('/tag/:name', express.static(path.join(__dirname, 'dist')));
+app.use('/tag/:name', express.static(path.join(__dirname, 'dist/home')));
 app.use('/newstory', express.static(path.join(__dirname, 'public')));
-app.use('/newstory', express.static(path.join(__dirname, 'dist')));
+app.use('/newstory', express.static(path.join(__dirname, 'dist/home')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
