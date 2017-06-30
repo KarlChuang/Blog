@@ -3,12 +3,13 @@ const path = require('path');
 const bodyParser = require('body-parser');
 // const passport = require('passport');
 // const FacebookStrategy = require('passport-facebook').Strategy;
+const pass = process.env.PASS;
 const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: '127.0.0.1',
     user: 'root',
-    password: 'Karl1234',
+    password: pass,
     database: 'blog',
   },
 });
