@@ -1,3 +1,4 @@
 dist/
 node_modules/
+mySQL_DB/
 src/__test__/
