@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Message from './Message';
 
 const AppDiv = styled.div`
@@ -77,36 +78,45 @@ const MessageArray = (InputArray) => {
   return DataRender;
 };
 
-class MessageList extends React.Component {
+class MessageList extends Component {
   render() {
     const { messageData, handleNew } = this.props;
     const DataRender = MessageArray(messageData);
     return (
       <AppDiv>
         <AddBar>
-          <Input><textarea style={textAreaStyle} ref={(input) => { this.textInput = input; }} /></Input>
+          <Input>
+            <textarea style={textAreaStyle} ref={(input) => { this.textInput = input; }} />
+          </Input>
           <AddButton onClick={() => { handleNew(this.textInput.value); this.textInput.value = ''; }}>Reply</AddButton>
         </AddBar>
         <TopBoard>
           {DataRender}
         </TopBoard>
-        {/* <Text title="New Message" show={this.state.show} onClick={this.handleClick.bind(this)} onCancel={this.handleCancel.bind(this)} /> */}
+        {
+      /* <Text
+            title="New Message"
+            show={this.state.show}
+            onClick={this.handleClick.bind(this)}
+            onCancel={this.handleCancel.bind(this)}
+          /> */
+        }
       </AppDiv>
     );
   }
 }
 
 MessageList.propTypes = {
-  messageData: React.PropTypes.arrayOf({
-    message: {
-      name: React.PropTypes.string.isRequired,
-      content: React.PropTypes.string.isRequired,
-      time: React.PropTypes.string.isRequired,
-      handleReply: React.PropTypes.func.isRequired,
-      id: React.PropTypes.number.isRequired,
-    },
-  }).isRequired,
-  handleNew: React.PropTypes.func.isRequired,
+  messageData: PropTypes.arrayOf(PropTypes.shape({
+    author: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      imgLink: PropTypes.string.isRequired,
+    }).isRequired,
+    content: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired).isRequired,
+  handleNew: PropTypes.func.isRequired,
 };
 
 export default MessageList;

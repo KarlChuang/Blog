@@ -1,14 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = {
-  entry: './src/RootComponents/StoryApp.js',
+const inProduction = (process.env.NODE_ENV === 'production');
 
+module.exports = {
+  devtool: 'cheap-module-source-map',
+  entry: {
+    home: './src/RootComponents/index.js',
+    story: './src/RootComponents/StoryApp.js',
+  },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
-
   module: {
     rules: [
       {
@@ -21,22 +25,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-          },
-        ],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
-
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-  ],
+  plugins: [],
 };
+
+if (inProduction) {
+  module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
+}

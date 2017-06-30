@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const TopBarDiv = styled.div`
@@ -42,7 +42,7 @@ const ButtonStoryChanger = styled.button`
 `;
 
 
-const TopBar = ({ type }) => (
+const TopBar = (/* { type } */) => (
   <TopBarDiv>
     <Title>
       <a style={{ textDecoration: 'none', color: 'black' }} href="/">
@@ -52,9 +52,21 @@ const TopBar = ({ type }) => (
     </Title>
     <ButtonStoryChanger>User</ButtonStoryChanger>
     { /*
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/like">Most like</Link></ButtonStoryChanger>)}
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/view">Most view</Link></ButtonStoryChanger>)}
-    {(type === 'story') ? null : (<ButtonStoryChanger><Link style={{ textDecoration: 'initial' }} to="/">latest</Link></ButtonStoryChanger>)}
+    {(type === 'story') ? null : (
+      <ButtonStoryChanger>
+        <Link style={{ textDecoration: 'initial' }} to="/like">Most like</Link>
+      </ButtonStoryChanger>
+    )}
+    {(type === 'story') ? null : (
+      <ButtonStoryChanger>
+        <Link style={{ textDecoration: 'initial' }} to="/view">Most view</Link>
+      </ButtonStoryChanger>
+    )}
+    {(type === 'story') ? null : (
+      <ButtonStoryChanger>
+        <Link style={{ textDecoration: 'initial' }} to="/">latest</Link>
+      </ButtonStoryChanger>
+    )}
     */ }
   </TopBarDiv>
 );

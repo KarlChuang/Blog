@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Mes = styled.div`
@@ -47,7 +48,7 @@ const Image = styled.img`
     </Reply>
 */
 
-const Message = ({ message }) => (
+const Message = ({ message /* , onReply */ }) => (
   <Mes>
     <div style={{ display: 'inline-flex' }}>
       <Image src={'./notLogin.jpg'/* message.imgLink */} alt="" />
@@ -65,21 +66,20 @@ const Message = ({ message }) => (
 );
 
 Message.propTypes = {
-  message: {
-    name: React.PropTypes.string.isRequired,
-    content: React.PropTypes.string.isRequired,
-    time: React.PropTypes.string.isRequired,
-    handleReply: React.PropTypes.func.isRequired,
-    id: React.PropTypes.number.isRequired,
-  },
-  onReply: React.PropTypes.func.isRequired,
+  message: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imgLink: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  // onReply: PropTypes.func.isRequired,
 };
 Message.defaultProps = {
   message: {
     name: '',
     content: '',
     time: '',
-    handleReply: () => { },
     id: 0,
   },
 };

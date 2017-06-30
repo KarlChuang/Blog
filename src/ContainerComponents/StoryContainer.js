@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from 'isomorphic-fetch';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Route } from 'react-router-dom';
 import StoryPage from '../PresentationComponents/StoryPage';
 import { readStoryAction, initMessages, addMessage, handleIdInit, handleMessageId } from '../ActionCreators/ActionCreator';
@@ -45,7 +46,7 @@ const StoryContainer = ({
         path="/story/:id"
         render={({ match }) => (
           <StoryPage
-            id={match.params.id}
+            id={Number(match.params.id)}
             initPage={initPage}
             story={decodeStory}
             messages={decodeMessage}
@@ -60,19 +61,19 @@ const StoryContainer = ({
 };
 
 StoryContainer.propTypes = {
-  initPage: React.PropTypes.func.isRequired,
-  story: React.PropTypes.instanceOf({
-    title: React.PropTypes.string.isRequired,
-    subtitle: React.PropTypes.string.isRequired,
-    content: React.PropTypes.string.isRequired,
-    author: React.PropTypes.instanceOf({
-      name: React.PropTypes.string,
-      imgLink: React.PropTypes.string,
+  initPage: PropTypes.func.isRequired,
+  story: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string,
+      imgLink: PropTypes.string,
     }).isRequired,
-    time: React.PropTypes.string.isRequired,
-    likeNum: React.PropTypes.number.isRequired,
-    view: React.PropTypes.number.isRequired,
-    tags: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+    time: PropTypes.string.isRequired,
+    // likeNum: PropTypes.number.isRequired,
+    view: PropTypes.number.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
 };
 

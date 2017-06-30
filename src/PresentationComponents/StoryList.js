@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const Title = styled.h1`
@@ -68,21 +69,21 @@ const Detail = styled.div`
   }
 `;
 
-const Detail2 = styled(Detail)`
-  width: 80px;
-  @media (max-width: 600px) {
-    display: inline-block;
-  }
-`;
+// const Detail2 = styled(Detail)`
+//   width: 80px;
+//   @media (max-width: 600px) {
+//     display: inline-block;
+//   }
+// `;
 
-const ButtomBar = styled.div`
-  display: inline-block;
-  @media (max-width: 600px) {
-    width: 100%;
-    text-align: center;
-    display: block;
-  }
-`;
+// const ButtomBar = styled.div`
+//   display: inline-block;
+//   @media (max-width: 600px) {
+//     width: 100%;
+//     text-align: center;
+//     display: block;
+//   }
+// `;
 
 const Tags = styled.div`
   width: 13%;
@@ -156,12 +157,12 @@ const AddStoryButton = styled.button`
 const mapArray = (array) => {
   const mapTags = [];
   for (let i = 0; i < 5 && i < array.length; i += 1) {
-    mapTags[i] = (<Link style={{ textDecoration: 'initial' }} to={`/tag/${array[i]}/`}><TagButton key={array[i]}>{array[i]}</TagButton></Link>);
+    mapTags[i] = (<Link key={i} style={{ textDecoration: 'initial' }} to={`/tag/${array[i]}/`}><TagButton key={array[i]}>{array[i]}</TagButton></Link>);
   }
   return mapTags;
 };
 
-const StoryBlock = ({ id, title, content, author, time, like, view, tags }) => (
+const StoryBlock = ({ id, title, content, time, /* author, like, view, */tags }) => (
   <Block>
     <div style={{ width: '84%', display: 'inline-block' }}>
       <a href={`/story/${id}`} style={{ color: 'black', textDecoration: 'none' }}>
@@ -198,17 +199,17 @@ const StoryBlock = ({ id, title, content, author, time, like, view, tags }) => (
   </Block>
 );
 StoryBlock.propTypes = {
-  id: React.PropTypes.number.isRequired,
-  title: React.PropTypes.string.isRequired,
-  content: React.PropTypes.string.isRequired,
-  author: React.PropTypes.instanceOf({
-    name: React.PropTypes.string,
-    imgLink: React.PropTypes.string,
-  }).isRequired,
-  time: React.PropTypes.string.isRequired,
-  like: React.PropTypes.number.isRequired,
-  view: React.PropTypes.number.isRequired,
-  tags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  // author: PropTypes.shape({
+  //   name: PropTypes.string,
+  //   imgLink: PropTypes.string,
+  // }).isRequired,
+  time: PropTypes.string.isRequired,
+  // like: PropTypes.number.isRequired,
+  // view: PropTypes.number.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const StoryList = ({ list, tag }) => (
@@ -241,19 +242,19 @@ StoryList.defaultProps = {
   tag: '',
 };
 StoryList.propTypes = {
-  tag: React.PropTypes.string,
-  list: React.PropTypes.instanceOf({
-    title: React.PropTypes.string.isRequired,
-    subtitle: React.PropTypes.string.isRequired,
-    author: React.PropTypes.instanceOf({
-      name: React.PropTypes.string,
-      imgLink: React.PropTypes.string,
+  tag: PropTypes.string,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string,
+      imgLink: PropTypes.string,
     }).isRequired,
-    time: React.PropTypes.string.isRequired,
-    likeNum: React.PropTypes.number.isRequired,
-    view: React.PropTypes.number.isRequired,
-    tags: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
-  }).isRequired,
+    time: PropTypes.string.isRequired,
+    likeNum: PropTypes.number.isRequired,
+    view: PropTypes.number.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  }).isRequired).isRequired,
 };
 
 export default StoryList;

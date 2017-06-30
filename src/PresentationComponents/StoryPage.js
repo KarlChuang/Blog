@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import TopBar from '../PresentationComponents/TopBar';
 import MessageList from '../PresentationComponents/MessageList';
 
@@ -88,21 +89,21 @@ const Author = styled(Content)`
   padding-bottom: 50px;
 `;
 
-const Detail2 = styled(Detail)`
-  width: 80px;
-  @media (max-width: 600px) {
-    display: inline-block;
-  }
-`;
+// const Detail2 = styled(Detail)`
+//   width: 80px;
+//   @media (max-width: 600px) {
+//     display: inline-block;
+//   }
+// `;
 
-const ButtomBar = styled.div`
-  display: inline-block;
-  @media (max-width: 600px) {
-    width: 100%;
-    text-align: center;
-    display: block;
-  }
-`;
+// const ButtomBar = styled.div`
+//   display: inline-block;
+//   @media (max-width: 600px) {
+//     width: 100%;
+//     text-align: center;
+//     display: block;
+//   }
+// `;
 
 const MessegeBoard = styled.div`
   width: 100%;
@@ -122,7 +123,6 @@ class StoryPage extends Component {
     const messages = this.props.messages;
     const addMessage = this.props.addMessage;
     const handleId = this.props.handleId;
-    console.log(handleId.messageId);
     return (
       <Story>
         <TopBar type="story" />
@@ -130,7 +130,7 @@ class StoryPage extends Component {
         <Subtitle>{story.subtitle}</Subtitle>
         <Content>{story.content}</Content>
         <Tags>
-          {story.tags.map(tag => <a href={`/tag/${tag}`}><TagButton style={{ cursor: 'auto' }} key={tag}>{tag}</TagButton></a>)}
+          {story.tags.map(tag => <a key={tag} href={`/tag/${tag}`}><TagButton style={{ cursor: 'auto' }} key={tag}>{tag}</TagButton></a>)}
         </Tags>
         <Author>
           <Image src={'./notLogin.jpg'/* story.author.imgLink */} alt="" />
@@ -165,21 +165,39 @@ class StoryPage extends Component {
 }
 
 StoryPage.propTypes = {
-  initPage: React.PropTypes.func.isRequired,
-  id: React.PropTypes.number.isRequired,
-  story: React.PropTypes.instanceOf({
-    title: React.PropTypes.string.isRequired,
-    subtitle: React.PropTypes.string.isRequired,
-    content: React.PropTypes.string.isRequired,
-    author: React.PropTypes.instanceOf({
-      name: React.PropTypes.string,
-      imgLink: React.PropTypes.string,
+  initPage: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  story: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string,
+      imgLink: PropTypes.string,
     }).isRequired,
-    time: React.PropTypes.string.isRequired,
-    likeNum: React.PropTypes.number.isRequired,
-    view: React.PropTypes.number.isRequired,
-    tags: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+    // time: PropTypes.string.isRequired,
+    // likeNum: PropTypes.number.isRequired,
+    // view: PropTypes.number.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
+  messages: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      imgLink: PropTypes.string.isRequired,
+    }).isRequired,
+    // title: PropTypes.string.isRequired,
+    // subtitle: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    // tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    time: PropTypes.string.isRequired,
+  }).isRequired).isRequired,
+  initMessageBoard: PropTypes.func.isRequired,
+  addMessage: PropTypes.func.isRequired,
+  // handleId: PropTypes.shpae({
+  //   storyId: PropTypes.number.isRequired,
+  //   messageId: PropTypes.number.isRequired,
+  // }).isRequired,
 };
 
 export default StoryPage;
