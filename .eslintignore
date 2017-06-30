@@ -1,4 +1,3 @@
-dist
-node_modules
-mySQL_DB
-src/__test__
+dist/
+node_modules/
+src/__test__/
