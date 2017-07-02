@@ -1,3 +1,3 @@
-# React-redux
+# Blog
 
-> Use it to build a React-redux front-side with express backend
+> [demo](https://calm-mesa-14164.herokuapp.com/)
