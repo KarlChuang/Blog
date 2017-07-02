@@ -3,14 +3,17 @@ const path = require('path');
 const bodyParser = require('body-parser');
 // const passport = require('passport');
 // const FacebookStrategy = require('passport-facebook').Strategy;
-const pass = process.env.PASS;
+const database_url = process.env.DATABASE_URL;
+
 const knex = require('knex')({
-  client: 'mysql',
+  client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: 'root',
-    password: pass,
-    database: 'blog',
+    host: database_url.split('@')[1].split(':')[0],
+    port: database_url.split('@')[1].split(':')[1].split('/')[0],
+    user: database_url.split('//')[1].split(':')[0],
+    password: database_url.split('//')[1].split(':')[1].split('@')[0],
+    database: database_url.split(':')[3].split('/')[1],
+    ssl: true,
   },
 });
 
@@ -32,6 +35,14 @@ app.get('/auth/facebook/callback',
     res.redirect('/');
   });
 */
+app.get('/db', (request, response) => {
+  knex('storytags')
+    .where('storytags.storyid', 1)
+    .rightJoin('tags', 'tags.id', 'storytags.tagid')
+    .select('*')
+    .then(tags => response.json(tags));
+});
+
 app.use('/', express.static(path.join(__dirname, 'public/home')));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 app.use('/like', express.static(path.join(__dirname, 'public/home')));
@@ -46,26 +57,32 @@ app.use('/newstory', express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/api/storyList', (req, res) => {
-  knex.select('id', 'title', 'subtitle', 'time', 'likeNum', 'view').from('stories').then((result) => {
+app.get('/api/storylist', (req, res) => {
+  knex('stories').select('id', 'title', 'subtitle', 'time', 'likenum', 'view').then((result) => {
     const List = result;
     for (let i = 0; i < List.length; i += 1) {
-      knex('storyTags')
-        .where('storyTags.storyId', List[i].id)
-        .rightJoin('tags', 'tags.id', 'storyTags.tagId')
+      knex('storytags')
+        .where('storytags.storyid', List[i].id)
+        .rightJoin('tags', 'tags.id', 'storytags.tagid')
         .select('tags.name')
         .then((tags) => {
           List[i].tags = tags.map(tag => tag.name);
           knex('stories')
-            .rightJoin('users', 'users.id', 'stories.authorId')
+            .rightJoin('users', 'users.id', 'stories.authorid')
             .where('stories.id', List[i].id)
-            .select('users.name', 'users.imgLink')
+            .select('users.name', 'users.imglink')
             .then((author) => {
               List[i].author = {
                 name: author[0].name,
-                imgLink: author[0].imgLink,
+                imgLink: author[0].imglink,
               };
-              if (List[i + 1] === undefined) {
+              let returnOrNot = true;
+              for (let j = 0; j < List.length; j += 1) {
+                if (List[j].author === undefined) {
+                  returnOrNot = false;
+                }
+              }
+              if (returnOrNot) {
                 res.json(List);
               }
             })
@@ -87,18 +104,18 @@ app.use('/story/:id', express.static(path.join(__dirname, 'public/story')));
 app.use('/story/:id', express.static(path.join(__dirname, 'dist')));
 
 app.get('/api/story/:id', (req, res) => {
-  knex.select('id', 'title', 'subtitle', 'time', 'likeNum', 'view', 'content').from('stories').where('id', req.params.id).then((result) => {
+  knex.select('id', 'title', 'subtitle', 'time', 'likenum', 'view', 'content').from('stories').where('id', req.params.id).then((result) => {
     const story = result[0];
-    knex('storyTags')
-      .where('storyTags.storyId', story.id)
-      .rightJoin('tags', 'tags.id', 'storyTags.tagId')
+    knex('storytags')
+      .where('storytags.storyid', story.id)
+      .rightJoin('tags', 'tags.id', 'storytags.tagid')
       .select('tags.name')
       .then((tags) => {
         story.tags = tags.map(tag => tag.name);
         knex('stories')
-          .rightJoin('users', 'users.id', 'stories.authorId')
+          .rightJoin('users', 'users.id', 'stories.authorid')
           .where('stories.id', story.id)
-          .select('users.name', 'users.imgLink')
+          .select('users.name', 'users.imglink')
           .then((author) => {
             story.author = {
               name: author[0].name,
@@ -144,9 +161,9 @@ app.get('/api/handleid', (req, res) => {
 
 app.get('/api/messages/:id', (req, res) => {
   knex('messages')
-    .where('replyToStory', req.params.id)
-    .rightJoin('users', 'users.id', 'messages.authorId')
-    .select('messages.id', 'users.name', 'users.imgLink', 'messages.time', 'messages.content')
+    .where('replytostory', req.params.id)
+    .rightJoin('users', 'users.id', 'messages.authorid')
+    .select('messages.id', 'users.name', 'users.imglink', 'messages.time', 'messages.content')
     .then((result) => {
       const newData = result.map(message => ({
         id: message.id,
@@ -168,10 +185,10 @@ app.post('/api/addmessage', (req, res) => {
   const newMessage = JSON.parse(JSON.stringify(req.body));
   knex('messages').insert({
     id: newMessage.id,
-    authorId: 1,
+    authorid: 1,
     time: newMessage.time,
     content: newMessage.content,
-    replyToStory: newMessage.replyToStory,
+    replytostory: newMessage.replyToStory,
   })
   .catch((err) => {
     console.log(err);
@@ -190,7 +207,7 @@ app.post('/api/addStory', (req, res) => {
   }).then((tagId) => {
     let newTagId = tagId;
     newStoryTags.forEach((tag) => {
-      knex('tags').select('Id', 'name').where('name', tag).then((response) => {
+      knex('tags').select('id', 'name').where('name', tag).then((response) => {
         if (response.length === 0) {
           newTagId += 1;
           tagIds.push(newTagId);
@@ -202,23 +219,23 @@ app.post('/api/addStory', (req, res) => {
             console.log(err);
           });
         } else {
-          tagIds.push(response[0].Id);
+          tagIds.push(response[0].id);
         }
         if (tagIds.length === newStoryTags.length) {
           knex('stories').insert({
             id: newStory.id,
             title: newStory.title,
             subtitle: newStory.subtitle,
-            authorId: newStory.authorId,
+            authorid: newStory.authorId,
             content: newStory.content,
             time: newStory.time,
-            likeNum: 0,
+            likenum: 0,
             view: 0,
           }).then(() => {
             tagIds.forEach((tid, index) => {
-              knex('storyTags').insert({
-                storyId: newStory.id,
-                tagId: tid,
+              knex('storytags').insert({
+                storyid: newStory.id,
+                tagid: tid,
               }).then(() => {
                 if (index === tagIds.length - 1) {
                   res.send('success');

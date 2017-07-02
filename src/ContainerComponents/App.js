@@ -143,7 +143,7 @@ App.propTypes = {
       imgLink: PropTypes.string,
     }).isRequired,
     time: PropTypes.string.isRequired,
-    likeNum: PropTypes.number.isRequired,
+    likenum: PropTypes.number.isRequired,
     view: PropTypes.number.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired).isRequired,
@@ -163,7 +163,7 @@ const mapDispatchToLinkProps = dispatch => ({
     ).then((json) => {
       dispatch(handleIdInit(json.storyId, json.messageId));
     });
-    fetch('/api/storyList').then(response =>
+    fetch('/api/storylist').then(response =>
       response.json(),
     ).then((json) => {
       dispatch(initFirstPage(json));

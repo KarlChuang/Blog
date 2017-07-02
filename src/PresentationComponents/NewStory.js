@@ -132,7 +132,7 @@ class NewStory extends Component {
         </div>
         <div>
           <div style={{ display: 'inline-block' }}>
-            { tags.map(tag => <Tag>{tag}</Tag>) }
+            { tags.map(tag => <Tag key={tag}>{tag}</Tag>) }
           </div>
           <textarea
             ref={(input) => { this.tagInput = input; }}
